@@ -13,7 +13,9 @@
   const STORE = 'firefighterTT.v1';
   const TREATS = [['🍦', 'ICE CREAM'], ['💧', 'WATER'], ['🧃', 'JUICE BOX'], ['🍪', 'COOKIE'], ['🍉', 'WATERMELON'], ['🍌', 'BANANA']];
   const HUMANS = ['teddy', 'tommy'];
-  const LANES = [5.2, 8.6, 12];
+  const LANES = [5.2, 8.2, 11.2];
+  // Foxy and Froggy drive in the lane by the buildings, the brothers nearer you
+  function laneZ(tr) { return LANES[m.trucks.some((t) => !t.human) ? (tr.human ? tr.i + 1 : 0) : tr.i]; }
   const TILES = { maple: '#ffb38a', pizza: '#ffd166', toy: '#ff8fa3', park: '#9be37a', tower: '#90e0ef', night: '#8e7dbe' };
   const PAR = { maple: 50, pizza: 70, toy: 90, park: 90, tower: 110, night: 130 }; // seconds: finish sooner for a time bonus
   const KEYS = {
@@ -217,7 +219,7 @@
     views = m.trucks.map((tr) => {
       const v = K.make(tr.id, { tag: m.trucks.length > 1 });
       W.scene().add(v.outer);
-      K.place(v, tr, 0, LANES[tr.lane]);
+      K.place(v, tr, 0, laneZ(tr));
       v.kittens = [];
       return v;
     });
@@ -503,7 +505,7 @@
   function placeAll(dt) {
     m.trucks.forEach((tr, i) => {
       const v = views[i];
-      K.place(v, tr, dt, LANES[tr.lane]);
+      K.place(v, tr, dt, laneZ(tr));
       let mode = 'idle';
       if (celebrate && celebrate.ids.includes(tr.id)) mode = celebrate.mode(tr.id);
       else if (tr.spraying) mode = 'spray';
@@ -703,7 +705,7 @@
     const w = window.innerWidth, h = window.innerHeight;
     return w / h > 1.1 ? [0, 0.06, 1, 0.72] : [0, 0.08, 1, 0.66];
   }
-  const look = new T.Vector3(), dir = new T.Vector3(-0.2, 0.17, 1).normalize();
+  const look = new T.Vector3(), dir = new T.Vector3(-0.3, 0.17, 1).normalize();
   function aimCam(dt) {
     const region = state === 'home' ? homeRegion() : state === 'results' ? (window.innerWidth / window.innerHeight > 1.1 ? [0, 0.05, 0.42, 0.9] : [0, 0.02, 1, 0.3]) : playRegion();
     const w = window.innerWidth, h = window.innerHeight;
@@ -724,7 +726,7 @@
     camS.y += (ty - camS.y) * k;
     camS.D += (D - camS.D) * (camS.snap ? 1 : 1 - Math.exp(-2 * dt));
     camS.snap = false;
-    look.set(camS.x, camS.y, 3.5);
+    look.set(camS.x, camS.y, 3 + Math.max(...watch.map(laneZ)) * 0.15);
     cam.position.copy(look).addScaledVector(dir, camS.D);
     cam.lookAt(look);
     cam.setViewOffset(rw, rh, -region[0] * w, -region[1] * h, w, h);
@@ -838,7 +840,7 @@
       const b = $(id);
       let x = w / 2 - bs / 2, y = h - safeB - bs;
       if (!two && spans[0]) x = (spans[0][1] + (w - edge - big)) / 2 - bs / 2;
-      if (two && narrow) y = h - safeB - bs - s * 1.2;
+      if (two && narrow) y = h - safeB - cross - bs * 0.25; // between the two pads, above their arrows
       if (!two && spans[0]) x = Math.max(spans[0][1] + 8, Math.min(x, w - edge - big - bs - 8));
       Object.assign(b.style, { left: `${Math.round(x)}px`, top: `${Math.round(y)}px`, width: `${bs}px`, height: `${bs}px` });
     }

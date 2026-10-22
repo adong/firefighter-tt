@@ -1,0 +1,8 @@
+[
+ { "label": "prefs", "js": "localStorage.setItem('claudeGames.muted', '1'); localStorage.removeItem('claudeGames.lang'); localStorage.removeItem('firefighterTT.v1'); location.reload(); 'reload'", "wait": 4500 },
+ { "label": "title", "js": "game.hold(true); game.autoPause = false; game.step(3); 'ok'", "wait": 600, "shot": "l1-title" },
+ { "label": "play1p", "js": "game.start({ level: 'tower', mode: 'solo', who: 'tommy', lv: { tommy: 'easy' } }); game.step(3.3); game.autopilot('kid'); game.step(6); game.buddy(); game.step(1.2); JSON.stringify(game.info().buddy)", "wait": 700, "shot": "l2-play1p" },
+ { "label": "results", "js": "game.autopilot('good'); var n = 0; while (game.info().state !== 'results' && n++ < 200) game.step(1, true); game.step(0.6); document.getElementById('rHead').textContent", "wait": 700, "shot": "l3-results" },
+ { "label": "play2p", "js": "game.start({ level: 'pizza', mode: 'race', who: 'both', lv: { teddy: 'normal', tommy: 'easy' } }); game.step(3.3); game.autopilot('kid'); game.step(5); 'ok'", "wait": 700, "shot": "l4-play2p" },
+ { "label": "book", "js": "game.home(); game.book(true); game.step(0.3); 'ok'", "wait": 700, "shot": "l5-book" }
+]

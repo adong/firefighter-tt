@@ -190,9 +190,9 @@
       tag = G.nameTag(NAMES[id] || id.toUpperCase(), TAGS[id] || '#ffffff');
       tag.material.depthTest = false;
       tag.renderOrder = 5;
-      tag.scale.multiplyScalar(0.85);
+      tag.scale.multiplyScalar(1.5);
       basket.add(tag);
-      tag.position.set(0, 2.25, 0);
+      tag.position.set(0, 2.6, 0);
     }
     return {
       id, outer, ladder, rails, rails2, rungs, basket, rider, p, pal, wheels, lightR, lightB, tag,

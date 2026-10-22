@@ -615,10 +615,10 @@
   // water from a nozzle to a point on a building's front (rate: drops a second)
   const acc = new Map();
   function spray(key, from, to, dt, big) {
-    const rate = big ? 260 : 170;
+    const rate = big ? 260 : 210;
     let a = (acc.get(key) || 0) + rate * dt;
-    const tf = big ? 0.75 : 0.38;
-    while (a >= 1) { a -= 1; shoot(water, from, to, tf * (0.9 + Math.random() * 0.2), big ? 0.9 : 0.45); }
+    const tf = big ? 0.75 : 0.6;
+    while (a >= 1) { a -= 1; shoot(water, from, to, tf * (0.9 + Math.random() * 0.2), big ? 0.9 : 0.35); }
     acc.set(key, a);
   }
   function splashAt(p, n, spread) {

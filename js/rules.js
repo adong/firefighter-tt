@@ -224,7 +224,7 @@
         for (const k of m.kittens) {
           if (k.saved || !kittenNear(tr, k)) continue;
           if (blocked(m, k)) {
-            if (tr.hotCool <= 0) { tr.hotCool = 3; m.events.push({ type: 'hot', pl: tr.i, kitten: k.i }); }
+            if (tr.hotCool <= 0 && !tr.spraying) { tr.hotCool = 3; m.events.push({ type: 'hot', pl: tr.i, kitten: k.i }); }
             continue;
           }
           k.saved = true;
